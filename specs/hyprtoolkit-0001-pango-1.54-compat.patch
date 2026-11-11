@@ -1,0 +1,67 @@
+EL10 compatibility: Pango 1.54 lacks PANGO_WRAP_NONE (added in 1.56).
+Emulate single-line ellipsizing via layout height -1; no change on Pango >= 1.56.
+
+--- a/src/element/text/Text.cpp
++++ b/src/element/text/Text.cpp
+@@ -20,6 +20,21 @@
+ #include "../../system/DesktopMethods.hpp"
+ #include "Macros.hpp"
+ 
++// EL10 compat: Pango < 1.56 has no PANGO_WRAP_NONE. Emulate it: while ellipsizing,
++// a layout height of -1 makes Pango keep every paragraph on a single line.
++#if !PANGO_VERSION_CHECK(1, 56, 0)
++#define HT_PANGO_NO_WRAP_NONE 1
++#endif
++static void htSetLayoutHeight(PangoLayout* layout, int height, bool noEllipsize) {
++#ifdef HT_PANGO_NO_WRAP_NONE
++    if (!noEllipsize) {
++        pango_layout_set_height(layout, -1);
++        return;
++    }
++#endif
++    pango_layout_set_height(layout, height);
++}
++
+ using namespace Hyprtoolkit;
+ using namespace Hyprgraphics;
+ 
+@@ -186,7 +201,7 @@
+     g_positioner->positionChildren(impl->self.lock());
+ 
+     pango_layout_set_width(m_impl->pangoData.layout, sc<int>(impl->position.size().x * PANGO_SCALE * m_impl->lastScale));
+-    pango_layout_set_height(m_impl->pangoData.layout, sc<int>(impl->position.size().y * PANGO_SCALE * m_impl->lastScale));
++    htSetLayoutHeight(m_impl->pangoData.layout, sc<int>(impl->position.size().y * PANGO_SCALE * m_impl->lastScale), m_impl->data.noEllipsize);
+ }
+ 
+ void CTextElement::recheckColor() {
+@@ -229,7 +244,7 @@
+     else
+         pango_layout_set_width(LAYOUT, -1);
+     if (maxSize.y != 0)
+-        pango_layout_set_height(LAYOUT, sc<int>(maxSize.y * PANGO_SCALE * m_impl->lastScale));
++        htSetLayoutHeight(LAYOUT, sc<int>(maxSize.y * PANGO_SCALE * m_impl->lastScale), m_impl->data.noEllipsize);
+     else
+         pango_layout_set_height(LAYOUT, -1);
+ 
+@@ -243,7 +258,7 @@
+         s.y = result.y;
+ 
+     pango_layout_set_width(m_impl->pangoData.layout, sc<int>(impl->position.size().x * PANGO_SCALE * m_impl->lastScale));
+-    pango_layout_set_height(m_impl->pangoData.layout, sc<int>(impl->position.size().y * PANGO_SCALE * m_impl->lastScale));
++    htSetLayoutHeight(m_impl->pangoData.layout, sc<int>(impl->position.size().y * PANGO_SCALE * m_impl->lastScale), m_impl->data.noEllipsize);
+ 
+     return s;
+ }
+@@ -358,7 +373,12 @@
+         pango_layout_set_wrap(pangoData.layout, PANGO_WRAP_WORD_CHAR);
+         pango_layout_set_ellipsize(pangoData.layout, PANGO_ELLIPSIZE_NONE);
+     } else {
++#ifdef HT_PANGO_NO_WRAP_NONE
++        pango_layout_set_wrap(pangoData.layout, PANGO_WRAP_WORD);
++        pango_layout_set_height(pangoData.layout, -1);
++#else
+         pango_layout_set_wrap(pangoData.layout, PANGO_WRAP_NONE);
++#endif
+         pango_layout_set_ellipsize(pangoData.layout, PANGO_ELLIPSIZE_END);
+     }
+ }

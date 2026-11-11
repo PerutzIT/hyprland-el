@@ -1,0 +1,31 @@
+EL10 compatibility for gcc-toolset-15 (libstdc++ 15).
+Upstream uses two C++26 library features only available in GCC 16:
+ - std::ranges::starts_with   -> guarded fallback with identical semantics
+ - std::string::subview(p, n) -> std::string_view{s}.substr(p, n) (identical result)
+
+--- a/src/helpers/MiscFunctions.cpp
++++ b/src/helpers/MiscFunctions.cpp
+@@ -474,7 +474,12 @@
+     });
+ 
+     return [&](auto&&... prefixes) -> bool {
++#if defined(__cpp_lib_ranges_starts_ends_with)
+         return (... || std::ranges::starts_with(str_view, prefixes));
++#else
++        // EL compat: libstdc++ < 16 lacks std::ranges::starts_with
++        return (... || (str.size() >= prefixes.size() && std::ranges::equal(str_view | std::views::take(prefixes.size()), prefixes)));
++#endif
+     }("true"sv, "yes"sv, "on"sv);
+     // clang-format on
+ }
+--- a/src/ipc/s1/S1.cpp
++++ b/src/ipc/s1/S1.cpp
+@@ -145,7 +145,7 @@
+             if (i < request.size() && (request[i + 1] == '\\' || request[i + 1] == ';'))
+                 ++i;
+             else
+-                LOG(Log::ERR, "Malformed socket1 request: invalid escape sequence {} at position {}, using it verbatim", request.subview(i, 2), i);
++                LOG(Log::ERR, "Malformed socket1 request: invalid escape sequence {} at position {}, using it verbatim", std::string_view{request}.substr(i, 2), i);
+         }
+         parsedCommand << request[i];
+     }

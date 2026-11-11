@@ -1,0 +1,15 @@
+EL10 compatibility: pciutils 3.13 headers lack extern "C" guards.
+
+--- a/src/utils/SystemInfo.cpp
++++ b/src/utils/SystemInfo.cpp
+@@ -20,7 +20,10 @@
+ #include <linux/sysinfo.h>
+ #include <unistd.h>
+ #include <glob.h>
++// EL10 compat: pciutils < 3.14 has no extern "C" guards in pci.h
++extern "C" {
+ #include <pci/pci.h>
++}
+ 
+ using namespace Hyprutils::File;
+ using namespace Hyprutils::String;
