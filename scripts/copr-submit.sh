@@ -11,14 +11,14 @@
 #   ./scripts/copr-submit.sh hyprland waybar # rebuild only these packages
 #
 # Environment:
-#   COPR_PROJECT  owner/project or project (default: hyprland-el)
+#   COPR_PROJECT  owner/project or project (default: perutzit/hyprland-el)
 #   COPR_CHROOTS  space separated chroots   (default: epel-10-x86_64)
 #   GIT_URL       clone URL                 (default: the public GitHub repo)
 #   GIT_REF       branch/tag/commit         (default: main)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-PROJECT="${COPR_PROJECT:-hyprland-el}"
+PROJECT="${COPR_PROJECT:-perutzit/hyprland-el}"
 CHROOTS="${COPR_CHROOTS:-epel-10-x86_64}"
 GIT_URL="${GIT_URL:-https://github.com/PerutzIT/hyprland-el.git}"
 GIT_REF="${GIT_REF:-main}"

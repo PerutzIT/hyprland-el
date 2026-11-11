@@ -81,12 +81,13 @@ Spec-level adjustments:
 ## Binary packages (Fedora COPR)
 
 Prebuilt packages for `epel-10-x86_64` (RHEL 10, AlmaLinux 10, Rocky Linux 10)
-are built by Fedora COPR directly from this repository:
+are built by Fedora COPR directly from this repository
+([perutzit/hyprland-el](https://copr.fedorainfracloud.org/coprs/perutzit/hyprland-el/)):
 
 ```bash
 sudo dnf install epel-release
 sudo dnf config-manager --set-enabled crb
-sudo dnf copr enable <copr-owner>/hyprland-el
+sudo dnf copr enable perutzit/hyprland-el
 sudo dnf install hyprland
 ```
 
