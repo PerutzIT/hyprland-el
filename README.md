@@ -78,6 +78,23 @@ Spec-level adjustments:
 - `hyprland`: the systemd user unit is moved from `lib64/` to `/usr/lib/systemd/user`, the build uses `NO_UWSM` because uwsm is not packaged for EL10, and `lua5.5` is added to the `Requires` of `hyprland.pc` (see [Plugins](#plugins)).
 - `waybar`: bundles spdlog 1.15.2 statically through an offline meson wrap, because EPEL has 1.14.
 
+## Binary packages (Fedora COPR)
+
+Prebuilt packages for `epel-10-x86_64` (RHEL 10, AlmaLinux 10, Rocky Linux 10)
+are built by Fedora COPR directly from this repository:
+
+```bash
+sudo dnf install epel-release
+sudo dnf config-manager --set-enabled crb
+sudo dnf copr enable <copr-owner>/hyprland-el
+sudo dnf install hyprland
+```
+
+Maintainers: `./scripts/copr-submit.sh` creates or updates the COPR project and
+submits every package in dependency order. It needs `copr-cli` and an API token in
+`~/.config/copr`. COPR builds each SRPM itself from the public git checkout
+(`.copr/Makefile`, method `make_srpm`).
+
 ## Building
 
 ```bash
