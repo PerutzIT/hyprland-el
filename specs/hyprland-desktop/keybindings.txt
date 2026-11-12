@@ -52,6 +52,7 @@
      SUPER + N                 Benachrichtigungen schließen / dismiss notifications
      SUPER + SHIFT + N         letzte Benachrichtigung zurück / restore
      SUPER + SHIFT + W         Leiste ein/aus / toggle bar
+     ALT + SHIFT               Tastaturlayout wechseln (bei mehreren) / switch layout
      Medientasten              Lautstärke, Helligkeit, Wiedergabe / media keys
 
    ANPASSEN / CUSTOMISE

@@ -213,32 +213,56 @@ hl.config({
 ---- INPUT ----
 ---------------
 
--- Keyboard layout: taken from the system setting (localectl) by default.
--- Override here, e.g. kb_layout = "de", kb_variant = "nodeadkeys".
-local function systemLayout()
-    local p = io.open("/etc/vconsole.conf", "r")
-    local layout, variant = nil, ""
-    local h = io.popen("localectl status 2>/dev/null")
-    if h then
-        local out = h:read("*a") or ""
-        h:close()
-        layout  = out:match("X11 Layout:%s*([%w,_%-]+)")
-        variant = out:match("X11 Variant:%s*([%w,_%-]+)") or ""
-    end
-    if not layout and p then
-        local km = (p:read("*a") or ""):match("KEYMAP=\"?([%w_%-]+)")
-        if km then layout = km:match("^(%a%a)") end
-    end
-    if p then p:close() end
-    return layout or "us", variant
+-- Keyboard layout, detected in this order:
+--   1. the user's GNOME setting (Settings > Keyboard, gsettings input-sources)
+--   2. the system setting (localectl / X11 layout chosen in the installer)
+--   3. the console keymap (/etc/vconsole.conf)
+-- Several layouts are switched with ALT+SHIFT.
+-- To force one, replace the detection, e.g.: kbLayout, kbVariant = "de", "nodeadkeys"
+local function readCmd(cmd)
+    local h = io.popen(cmd .. " 2>/dev/null")
+    if not h then return "" end
+    local out = h:read("*a") or ""
+    h:close()
+    return out
 end
-local kbLayout, kbVariant = systemLayout()
+
+local function detectLayout()
+    -- 1. GNOME: [('xkb', 'at'), ('xkb', 'us+intl')]
+    local layouts, variants = {}, {}
+    for src in readCmd("gsettings get org.gnome.desktop.input-sources sources"):gmatch("%('xkb',%s*'([^']+)'%)") do
+        local l, v = src:match("^([^+]+)%+?(.*)$")
+        table.insert(layouts, l)
+        table.insert(variants, v or "")
+    end
+    if #layouts > 0 then
+        return table.concat(layouts, ","), table.concat(variants, ",")
+    end
+
+    -- 2. systemd-localed
+    local out = readCmd("localectl status")
+    local l = out:match("X11 Layout:%s*([%w,_%-]+)")
+    if l and l ~= "n" then
+        local v = out:match("X11 Variant:%s*([%w,_%-]+)")
+        return l, (v and v ~= "n") and v or ""
+    end
+
+    -- 3. console keymap, e.g. KEYMAP="de-latin1-nodeadkeys"
+    local f = io.open("/etc/vconsole.conf", "r")
+    if f then
+        local km = (f:read("*a") or ""):match("KEYMAP=\"?([%w_%-]+)")
+        f:close()
+        if km then return km:match("^(%a+)") or "us", "" end
+    end
+    return "us", ""
+end
+local kbLayout, kbVariant = detectLayout()
 
 hl.config({
     input = {
         kb_layout  = kbLayout,
         kb_variant = kbVariant,
-        kb_options = "",
+        kb_options = kbLayout:find(",") and "grp:alt_shift_toggle" or "",
         numlock_by_default = true,
         repeat_rate  = 35,
         repeat_delay = 280,

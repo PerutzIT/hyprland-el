@@ -1,6 +1,6 @@
 Name:           hyprland-desktop
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Complete, preconfigured Hyprland desktop for Enterprise Linux
 License:        MIT
 URL:            https://github.com/PerutzIT/hyprland-el
@@ -121,5 +121,9 @@ install -Dpm 0755 bin/hypr-el-screenshot %{buildroot}%{_bindir}/hypr-el-screensh
 %{_bindir}/hypr-el-screenshot
 
 %changelog
+* Thu Nov 12 2026 Hypr-EL <hypr-el@localhost> - 1.0.0-2
+- Keyboard layout: use the user's GNOME input sources first, then localectl,
+  then the console keymap; ALT+SHIFT switches between several layouts
+
 * Thu Nov 12 2026 Hypr-EL <hypr-el@localhost> - 1.0.0-1
 - Initial release: complete preconfigured Hyprland desktop
