@@ -1,0 +1,20 @@
+#!/bin/bash
+# hypr-el-screenshot area|window|screen
+# Saves to ~/Pictures/Screenshots (XDG pictures dir) and copies to the clipboard.
+set -euo pipefail
+mode="${1:-area}"
+dir="$(xdg-user-dir PICTURES 2>/dev/null || echo "$HOME/Pictures")/Screenshots"
+mkdir -p "$dir"
+file="$dir/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+
+case "$mode" in
+  area)   geom=$(slurp -d -b '#0d0f2066' -c '#33ccffff' -w 2) || exit 0; grim -g "$geom" "$file" ;;
+  window) geom=$(hyprctl -j activewindow | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+          grim -g "$geom" "$file" ;;
+  screen) out=$(hyprctl -j monitors | jq -r '.[] | select(.focused) | .name')
+          grim -o "$out" "$file" ;;
+  *) echo "usage: $0 area|window|screen" >&2; exit 2 ;;
+esac
+
+wl-copy --type image/png < "$file"
+notify-send -a Screenshot -i "$file" "Screenshot gespeichert" "$file (auch in der Zwischenablage)"

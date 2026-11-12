@@ -1,3 +1,4 @@
 repo/
 logs/
 *.rpm
+specs/*.tar.gz

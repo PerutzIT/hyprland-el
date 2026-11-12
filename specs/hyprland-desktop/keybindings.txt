@@ -1,0 +1,61 @@
+
+   HYPRLAND · hyprland-el  —  Tastenkürzel / key bindings          (q = schließen / close)
+   ═══════════════════════════════════════════════════════════════════════════════════
+
+   PROGRAMME / APPS
+     SUPER + Return / Q        Terminal (kitty)
+     SUPER + Space / R         App-Starter (hyprlauncher)
+     SUPER + E                 Dateimanager / file manager
+     SUPER + B                 Browser
+     SUPER + F1                diese Übersicht / this cheat sheet
+     SUPER + SHIFT + C         Farbwähler / color picker (→ Zwischenablage)
+
+   FENSTER / WINDOWS
+     SUPER + C / W             Fenster schließen / close window
+     SUPER + F                 Vollbild / fullscreen
+     SUPER + SHIFT + F         maximieren / maximize
+     SUPER + V                 schwebend ↔ gekachelt / float ↔ tile
+     SUPER + SHIFT + V         Fenster zentrieren / center
+     SUPER + P                 Pseudo-Tiling
+     SUPER + SHIFT + P         anheften (alle Arbeitsflächen) / pin
+     SUPER + J                 Teilung umschalten / toggle split
+     SUPER + ← → ↑ ↓           Fokus wechseln / move focus
+     SUPER + SHIFT + ← → ↑ ↓   Fenster verschieben / move window
+     SUPER + CTRL  + ← → ↑ ↓   Größe ändern / resize
+     SUPER + ALT + R           Größen-Modus (Pfeile, Esc beendet) / resize mode
+     SUPER + Maus links        Fenster ziehen / drag window
+     SUPER + Maus rechts       Größe ändern / resize window
+     ALT + Tab                 nächstes Fenster / next window
+
+   GRUPPEN (TABS)
+     SUPER + G                 Gruppe an/aus / toggle group
+     SUPER + Tab               nächstes Fenster der Gruppe / next in group
+     SUPER + SHIFT + Tab       vorheriges Fenster / previous in group
+
+   ARBEITSFLÄCHEN / WORKSPACES
+     SUPER + 1 … 0             zu Arbeitsfläche 1–10 / go to workspace
+     SUPER + SHIFT + 1 … 0     Fenster mitnehmen / move window there (follow)
+     SUPER + ALT + 1 … 0       Fenster still verschieben / move window silently
+     SUPER + Mausrad · Bild↑↓  Arbeitsflächen blättern / scroll workspaces
+     3 Finger wischen          Arbeitsfläche wechseln (Touchpad) / swipe
+     SUPER + S                 Notizzettel-Arbeitsfläche / scratchpad
+     SUPER + ALT + S           Fenster in den Scratchpad / move to scratchpad
+
+   SCREENSHOTS  (~/Bilder/Screenshots + Zwischenablage / clipboard)
+     Print  ·  SUPER + SHIFT + S   Bereich / area
+     SUPER + Print             aktives Fenster / active window
+     SHIFT + Print             ganzer Bildschirm / whole screen
+
+   SYSTEM
+     SUPER + L                 Bildschirm sperren / lock
+     SUPER + M                 Abmelden / Neustart / Ausschalten (hyprshutdown)
+     SUPER + N                 Benachrichtigungen schließen / dismiss notifications
+     SUPER + SHIFT + N         letzte Benachrichtigung zurück / restore
+     SUPER + SHIFT + W         Leiste ein/aus / toggle bar
+     Medientasten              Lautstärke, Helligkeit, Wiedergabe / media keys
+
+   ANPASSEN / CUSTOMISE
+     hypr-el-setup --copy      kopiert alle Vorgaben nach ~/.config zum Bearbeiten
+     ~/.config/hypr/hyprland.lua   Hyprland-Konfiguration (Lua) · wiki.hypr.land
+     hyprpm                    Plugins (siehe README)
+

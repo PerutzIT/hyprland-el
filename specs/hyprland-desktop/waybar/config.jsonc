@@ -1,0 +1,130 @@
+// hyprland-el default bar (system default, /usr/share/hypr-el/waybar/).
+// Copy to ~/.config/waybar/ (hypr-el-setup --copy) to customise.
+{
+  "layer": "top",
+  "position": "top",
+  "height": 38,
+  "margin-top": 8,
+  "margin-left": 12,
+  "margin-right": 12,
+  "spacing": 6,
+  "reload_style_on_change": true,
+
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock", "mpris"],
+  "modules-right": ["idle_inhibitor", "pulseaudio", "backlight", "network", "cpu", "memory", "battery", "tray", "custom/power"],
+
+  "custom/launcher": {
+    "format": "\uf17c",
+    "tooltip-format": "Apps (SUPER+Space)  ·  Shortcuts (SUPER+F1)",
+    "on-click": "hyprlauncher",
+    "on-click-right": "hypr-el-keys"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": { "default": "\uf111", "active": "\uf192", "urgent": "\uf06a" },
+    "persistent-workspaces": { "*": 5 },
+    "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({workspace = \"e-1\"})'",
+    "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({workspace = \"e+1\"})'"
+  },
+
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 48,
+    "separate-outputs": true,
+    "rewrite": { "^$": "\uf108 Desktop" }
+  },
+
+  "clock": {
+    "format": "\uf017  {:%H:%M}",
+    "format-alt": "\uf073  {:%A, %d. %B %Y   %H:%M}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "left",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#33ccff'><b>{}</b></span>",
+        "days": "<span color='#c8cbe0'>{}</span>",
+        "weeks": "<span color='#00e0a8'><b>KW{}</b></span>",
+        "weekdays": "<span color='#8b5cf6'><b>{}</b></span>",
+        "today": "<span color='#ec4899'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": { "on-scroll-up": "shift_up", "on-scroll-down": "shift_down" }
+  },
+
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "dynamic-len": 36,
+    "player-icons": { "default": "\uf001", "firefox": "\uf269" },
+    "status-icons": { "paused": "\uf04c" }
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": { "activated": "\uf06e", "deactivated": "\uf070" },
+    "tooltip-format-activated": "Bildschirmsperre aus / idle lock off",
+    "tooltip-format-deactivated": "Bildschirmsperre an / idle lock on"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "\uf6a9 muted",
+    "format-bluetooth": "\uf293 {volume}%",
+    "format-icons": { "headphone": "\uf025", "default": ["\uf026", "\uf027", "\uf028"] },
+    "scroll-step": 5,
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+
+  "backlight": {
+    "format": "{icon} {percent}%",
+    "format-icons": ["\uf186", "\uf0eb", "\uf185"],
+    "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
+    "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
+  },
+
+  "network": {
+    "format-wifi": "\uf1eb  {signalStrength}%",
+    "format-ethernet": "\uf6ff",
+    "format-linked": "\uf6ff (no IP)",
+    "format-disconnected": "⚠",
+    "tooltip-format-wifi": "{essid}  {ipaddr}/{cidr}\n\uf062 {bandwidthUpBytes}   \uf063 {bandwidthDownBytes}",
+    "tooltip-format-ethernet": "{ifname}  {ipaddr}/{cidr}\n\uf062 {bandwidthUpBytes}   \uf063 {bandwidthDownBytes}",
+    "on-click": "kitty --class hypr-el-nmtui -e nmtui",
+    "on-click-right": "nm-connection-editor"
+  },
+
+  "cpu": {
+    "format": "\uf2db {usage}%",
+    "interval": 3,
+    "on-click": "kitty --class hypr-el-btop -e btop"
+  },
+
+  "memory": {
+    "format": "\uf538 {percentage}%",
+    "interval": 5,
+    "tooltip-format": "{used:0.1f} / {total:0.1f} GiB",
+    "on-click": "kitty --class hypr-el-btop -e btop"
+  },
+
+  "battery": {
+    "states": { "warning": 25, "critical": 12 },
+    "format": "{icon} {capacity}%",
+    "format-charging": "\uf0e7 {capacity}%",
+    "format-plugged": "\uf1e6 {capacity}%",
+    "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"]
+  },
+
+  "tray": { "icon-size": 16, "spacing": 8 },
+
+  "custom/power": {
+    "format": "\uf011",
+    "tooltip-format": "Abmelden / Neustart / Ausschalten (SUPER+M)",
+    "on-click": "hyprshutdown",
+    "on-click-right": "pidof hyprlock || hyprlock"
+  }
+}

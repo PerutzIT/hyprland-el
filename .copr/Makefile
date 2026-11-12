@@ -8,6 +8,7 @@ SPECDIR := $(dir $(SPEC))
 .PHONY: srpm
 srpm:
 	command -v spectool >/dev/null || dnf -y install rpmdevtools rpm-build
+	bash "$(SPECDIR)/../scripts/pack-srcdir.sh" "$(SPEC)" "$(SPECDIR)"
 	spectool -g -C "$(SPECDIR)" "$(SPEC)"
 	rpmbuild -bs \
 	  --define "_sourcedir $(SPECDIR)" \

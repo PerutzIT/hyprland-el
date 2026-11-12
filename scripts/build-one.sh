@@ -5,6 +5,7 @@ set -euo pipefail
 spec="$1"; inst="${2:-}"
 TOP="${HYPR_TOPDIR:-$HOME/rpmbuild}"
 mkdir -p "$TOP"/{SOURCES,SPECS,RPMS,SRPMS,BUILD}
+"$(dirname "$0")/pack-srcdir.sh" "$spec" "$TOP/SOURCES"
 spectool -g -C "$TOP/SOURCES" "$spec"
 cp -f "$(dirname "$spec")"/*.sh "$(dirname "$spec")"/*.patch "$TOP/SOURCES/" 2>/dev/null || true
 dnf -y builddep "$spec"

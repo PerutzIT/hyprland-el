@@ -1,0 +1,6 @@
+#!/bin/bash
+# Show the hyprland-el key binding cheat sheet in a floating terminal.
+SHEET=/usr/share/hypr-el/keybindings.txt
+if [ -t 1 ]; then exec less -R "$SHEET"; fi
+exec kitty --class hypr-el-keys --title "Hyprland – Tastenkürzel / Key bindings" \
+     -o font_size=12 sh -c "less -R '$SHEET'"

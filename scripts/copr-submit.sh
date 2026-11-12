@@ -37,6 +37,8 @@ CORE=(
 EXTRAS=(
   extras/gtk-layer-shell extras/playerctl extras/grim extras/slurp extras/mako
   extras/brightnessctl extras/waybar
+  # complete preconfigured desktop (meta package + defaults)
+  specs/hyprland-desktop
 )
 
 ALL=("${CORE[@]}" "${EXTRAS[@]}")
