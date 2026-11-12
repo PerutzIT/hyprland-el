@@ -1,6 +1,6 @@
 Name:           hyprland-desktop
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Complete, preconfigured Hyprland desktop for Enterprise Linux
 License:        MIT
 URL:            https://github.com/PerutzIT/hyprland-el
@@ -23,10 +23,6 @@ Requires:       hyprland-guiutils
 Requires:       hyprshutdown
 Requires:       hyprpicker
 Requires:       hyprsunset
-Requires:       hyprpwcenter
-Requires:       hyprsysteminfo
-Requires:       hyprland-qt-support
-Requires:       hyprqt6engine
 # bar, notifications, screenshots, clipboard, media
 Requires:       waybar
 Requires:       mako
@@ -47,26 +43,28 @@ Requires:       glib2
 Requires:       xdg-utils
 Requires:       xdg-user-dirs
 Requires:       qt6-qtwayland
-Requires:       qt5-qtwayland
 Requires:       adwaita-icon-theme
 Requires:       jetbrains-mono-fonts
 Requires:       fontawesome-6-free-fonts
 Requires:       fontawesome-6-brands-fonts
-Requires:       google-noto-sans-fonts
-Requires:       google-noto-emoji-fonts
 Requires:       polkit
 Requires:       NetworkManager-tui
 
-# useful desktop applications, installed by default but removable
+# small useful desktop applications, installed by default but removable
 Recommends:     nautilus
 Recommends:     firefox
 Recommends:     pavucontrol
 Recommends:     nm-connection-editor
-Recommends:     papirus-icon-theme
-Recommends:     gnome-keyring
 Recommends:     btop
-Recommends:     fastfetch
-Recommends:     mpv
+
+# optional, not installed by default (dnf install <name>):
+# Qt theme integration, extra hypr tools, nicer icons
+Suggests:       hyprqt6engine
+Suggests:       hyprland-qt-support
+Suggests:       hyprpwcenter
+Suggests:       hyprsysteminfo
+Suggests:       papirus-icon-theme
+Suggests:       qt5-qtwayland
 
 %description
 Meta package and default configuration that turns the Hyprland compositor into
@@ -121,6 +119,10 @@ install -Dpm 0755 bin/hypr-el-screenshot %{buildroot}%{_bindir}/hypr-el-screensh
 %{_bindir}/hypr-el-screenshot
 
 %changelog
+* Thu Nov 12 2026 Hypr-EL <hypr-el@localhost> - 1.0.0-3
+- Slim down: Qt theme engine, Qt5, Papirus, Noto fonts, mpv and fastfetch are
+  optional now (about 100 MB instead of about 380 MB on top of GNOME)
+
 * Thu Nov 12 2026 Hypr-EL <hypr-el@localhost> - 1.0.0-2
 - Keyboard layout: use the user's GNOME input sources first, then localectl,
   then the console keymap; ALT+SHIFT switches between several layouts

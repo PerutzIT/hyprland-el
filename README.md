@@ -132,7 +132,11 @@ sudo dnf install hyprland-desktop
 - The *Aurora* wallpaper (hyprpaper), lock screen (hyprlock), idle handling (hypridle),
   status bar (waybar), notifications (mako), polkit agent, screen sharing portal,
   launcher (hyprlauncher), clipboard (wl-clipboard) and a dark GTK/Qt theme.
-- Recommended apps: Firefox, Nautilus, pavucontrol, btop, fastfetch, mpv.
+- Recommended apps (small, removable): Firefox, Nautilus, pavucontrol, btop.
+  On top of an existing GNOME installation this is about 40 packages / 11 MB download.
+- Optional extras, not installed by default:
+  `sudo dnf install hyprqt6engine hyprland-qt-support qt5-qtwayland papirus-icon-theme hyprpwcenter hyprsysteminfo`
+  (Qt theme integration, Qt5 apps on Wayland, Papirus icons, extra hypr tools).
 
 Pick **Hyprland** in the GDM session menu (gear icon after selecting the user), or run
 `start-hyprland` from a TTY. Log in as a normal user, not root.

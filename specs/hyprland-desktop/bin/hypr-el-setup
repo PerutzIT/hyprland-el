@@ -65,7 +65,6 @@ case "${1:-}" in
     fi
     gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'       2>/dev/null || true
     gsettings set org.gnome.desktop.interface cursor-size  24              2>/dev/null || true
-    gsettings set org.gnome.desktop.interface font-name 'Noto Sans 11'     2>/dev/null || true
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 11' 2>/dev/null || true
     gsettings set org.gnome.desktop.wm.preferences button-layout ':'      2>/dev/null || true
     ;;

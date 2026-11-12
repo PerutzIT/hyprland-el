@@ -11,7 +11,7 @@
 @define-color crit    #ff5577;
 
 * {
-  font-family: "JetBrains Mono", "Font Awesome 6 Free", "Font Awesome 6 Brands", "Noto Sans", sans-serif;
+  font-family: "JetBrains Mono", "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
   font-size: 13px;
   font-weight: 600;
   border: none;

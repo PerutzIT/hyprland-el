@@ -86,7 +86,9 @@ hl.env("XCURSOR_THEME", "Adwaita")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-hl.env("QT_QPA_PLATFORMTHEME", "hyprqt6engine")
+if exists("/usr/lib64/qt6/plugins/platformthemes/libhyprqt6engine.so") then
+    hl.env("QT_QPA_PLATFORMTHEME", "hyprqt6engine")   -- optional package hyprqt6engine
+end
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("GDK_BACKEND", "wayland,x11,*")
 hl.env("SDL_VIDEODRIVER", "wayland,x11")
