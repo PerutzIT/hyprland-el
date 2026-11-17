@@ -28,7 +28,7 @@ CORE=(
   specs/wayland-protocols specs/libxkbcommon specs/lua5.5 specs/muparser specs/glaze
   specs/hyprutils specs/hyprwayland-scanner specs/hyprlang specs/hyprland-protocols
   specs/hyprwire specs/hyprcursor specs/hyprgraphics specs/aquamarine
-  specs/hyprland
+  specs/hyprland specs/hyprland-plugins
   specs/hyprtoolkit specs/xdg-desktop-portal-hyprland specs/hyprpaper specs/hypridle
   specs/hyprlock specs/hyprsunset specs/hyprpicker specs/hyprland-guiutils
   specs/hyprland-qt-support specs/hyprqt6engine specs/hyprlauncher specs/hyprshutdown

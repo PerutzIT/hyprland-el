@@ -2,3 +2,5 @@ repo/
 logs/
 *.rpm
 specs/*.tar.gz
+__pycache__/
+*.pyc

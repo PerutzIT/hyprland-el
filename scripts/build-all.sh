@@ -26,7 +26,7 @@ CORE=(
   specs/hyprutils specs/hyprwayland-scanner specs/hyprlang specs/hyprland-protocols
   specs/hyprwire specs/hyprcursor specs/hyprgraphics specs/aquamarine
   # layer 2: the compositor
-  specs/hyprland
+  specs/hyprland specs/hyprland-plugins
   # layer 3: ecosystem
   specs/hyprtoolkit specs/xdg-desktop-portal-hyprland specs/hyprpaper specs/hypridle
   specs/hyprlock specs/hyprsunset specs/hyprpicker specs/hyprland-guiutils

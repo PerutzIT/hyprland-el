@@ -13,10 +13,10 @@ on a newer toolchain (see [Patches](#el10-patches)).
 |---|---|
 | EL10 base updates | `wayland-protocols` 1.50, `libxkbcommon` 1.13.2 (ABI-compatible update), `lua5.5` (parallel to the system Lua 5.4), `muparser`, `glaze` |
 | Hypr libraries | `hyprutils`, `hyprlang`, `hyprcursor`, `hyprgraphics`, `hyprwayland-scanner`, `hyprland-protocols`, `hyprwire`, `aquamarine`, `hyprtoolkit` |
-| Compositor | `hyprland` 0.57.2 (Hyprland, hyprctl, hyprpm, start-hyprland), `hyprland-devel` (plugin headers) |
+| Compositor | `hyprland` 0.57.2 (Hyprland, hyprctl, hyprpm, start-hyprland), `hyprland-devel` (plugin headers), `hyprland-plugins` (official plugins: hyprbars, hyprfocus, borders-plus-plus, csgo-vulkan-fix) |
 | Ecosystem | `xdg-desktop-portal-hyprland`, `hyprpaper`, `hypridle`, `hyprlock`, `hyprsunset`, `hyprpicker`, `hyprlauncher`, `hyprpolkitagent`, `hyprland-guiutils`, `hyprshutdown`, `hyprpwcenter`, `hyprsysteminfo`, `hyprland-qt-support`, `hyprqt6engine` |
 | Extras (not in EPEL) | `waybar`, `gtk-layer-shell`, `mako`, `grim`, `slurp`, `playerctl`, `brightnessctl` |
-| Complete desktop | `hyprland-desktop`: meta package plus a curated default configuration, wallpaper and theme |
+| Complete desktop | `hyprland-desktop`: meta package, ready-to-use configuration, 7 themes, settings app |
 
 Everything else (kitty, dolphin, wl-clipboard, pipewire, qt6-qtwayland, …) comes
 from AlmaLinux, CRB and EPEL.
@@ -36,7 +36,12 @@ builds need.
 
 ## Plugins
 
-Plugins are installed the usual way with **hyprpm**. Nothing EL-specific is needed:
+The official plugins from [hyprwm/hyprland-plugins](https://github.com/hyprwm/hyprland-plugins)
+are packaged as `hyprland-plugins` (built against the exact `hyprland` package, installed to
+`/usr/lib64/hyprland/plugins/`). Load one in the Lua config with
+`hl.plugin.load("/usr/lib64/hyprland/plugins/hyprbars.so")`.
+
+Any other plugin is installed the usual way with **hyprpm**. Nothing EL-specific is needed:
 
 ```bash
 sudo dnf install hyprland-devel          # compiler, cmake/meson, all headers
@@ -89,7 +94,7 @@ are built by Fedora COPR directly from this repository
 sudo dnf install epel-release
 sudo dnf config-manager --set-enabled crb
 sudo dnf copr enable perutzit/hyprland-el
-sudo dnf install hyprland-desktop     # everything, preconfigured (or just: hyprland)
+sudo dnf install hyprland-desktop     # complete desktop with settings app (or just: hyprland)
 ```
 
 Maintainers: `./scripts/copr-submit.sh` creates or updates the COPR project and
@@ -124,35 +129,45 @@ mock -r alma+epel-10-x86_64 --chain --localrepo=/tmp/hypr-chain <SRPMs in build-
 sudo dnf install hyprland-desktop
 ```
 
-`hyprland-desktop` installs the complete environment and a ready-to-use configuration:
+Then pick **Hyprland** in the GDM session menu (gear icon after selecting the user) and log in
+as a normal user. Everything is preconfigured:
 
-- Hyprland with a curated Lua config: blur, animations, gradient borders, groups (tabs),
-  scratchpad, gestures, smart gaps, screenshots, color picker, media and brightness keys.
-  The keyboard layout is taken from the system setting (`localectl`).
-- The *Aurora* wallpaper (hyprpaper), lock screen (hyprlock), idle handling (hypridle),
-  status bar (waybar), notifications (mako), polkit agent, screen sharing portal,
-  launcher (hyprlauncher), clipboard (wl-clipboard) and a dark GTK/Qt theme.
-- Recommended apps (small, removable): Firefox, Nautilus, pavucontrol, btop.
-  On top of an existing GNOME installation this is about 40 packages / 11 MB download.
-- Optional extras, not installed by default:
-  `sudo dnf install hyprqt6engine hyprland-qt-support qt5-qtwayland papirus-icon-theme hyprpwcenter hyprsysteminfo`
-  (Qt theme integration, Qt5 apps on Wayland, Papirus icons, extra hypr tools).
+- **Windows behave as expected:** every window has a title bar with close, maximize and
+  minimize buttons (hyprbars). Drag the title bar to move a window, drag the border to resize,
+  double-click the title bar to maximize. GTK4/libadwaita apps (Nautilus, …) keep their own
+  header bar. Windows are tiled by default; *Settings → Fenster & Leiste → Klassischer Modus*
+  makes new windows float like on other desktops.
+- **Minimize really works:** minimized windows disappear and come back from the taskbar
+  (click), with SUPER+SHIFT+H, or from notifications. Hyprland itself has no minimized state;
+  hyprland-desktop keeps them on a hidden special workspace.
+- **Bar:** launcher, workspaces, taskbar, clock with calendar, tray, media, volume, brightness,
+  network, battery, settings and power menu.
+- **Settings app "Hyprland-Einstellungen"** (SUPER+I or the gear in the bar): theme, wallpaper
+  (own images too), title bars, gaps, rounding, borders, blur, shadows, animations, transparency,
+  window layout, bar position/taskbar/clock, keyboard layouts, mouse and touchpad, display
+  resolution and scale (with automatic revert), idle/lock/suspend times, default apps.
+  Changes apply immediately.
+- **Themes:** Catppuccin Mocha (default) and Latte, Tokyo Night, Nord, Gruvbox Dark, Rosé Pine,
+  Everforest – each colours windows, bar, notifications, terminal, lock screen, launcher and
+  GTK apps, and comes with its own generated wallpaper. SUPER+SHIFT+T cycles through them.
+- Lock screen, idle handling, notifications, polkit agent, screen sharing portal, screenshots,
+  clipboard, media keys. **SUPER+F1** shows all key bindings.
 
-Pick **Hyprland** in the GDM session menu (gear icon after selecting the user), or run
-`start-hyprland` from a TTY. Log in as a normal user, not root.
-**SUPER+F1** shows all key bindings.
+On top of an existing GNOME installation this is about 45 packages / 15 MB download.
+Optional extras: `sudo dnf install hyprqt6engine hyprland-qt-support qt5-qtwayland papirus-icon-theme`.
 
-How the configuration is applied:
+How the configuration is organised:
 
-- The defaults live in `/etc/xdg/hypr/` (Hyprland, hyprpaper, hypridle, hyprlock,
-  hyprtoolkit) and `/usr/share/hypr-el/` (waybar, mako, kitty). Every user without an own
-  `~/.config/hypr/hyprland.lua` gets them automatically.
-- If Hyprland already ran before and created an *autogenerated* config, run
-  `hypr-el-setup` once (it moves that file to a backup) and log in again.
-- `hypr-el-setup --copy` copies all defaults to `~/.config` for your own changes.
-  Existing files are backed up, not overwritten.
+| File | Role |
+|---|---|
+| `/etc/xdg/hypr/hyprland.lua` | system-wide Hyprland config, reads the user's settings |
+| `~/.config/hypr-el/settings.json` | the user's settings (written by the settings app) |
+| `~/.config/hypr-el/*` | configs generated from the settings (bar, notifications, lock, idle, wallpaper, terminal) |
+| `~/.config/hypr/hyprland.lua`, `~/.config/waybar/…`, `~/.config/mako/config`, `~/.config/kitty/kitty.conf` | if present, a user's own files take precedence |
 
-Hyprland 0.57 uses **Lua** for its configuration. LuaLS stubs are in `/usr/share/hypr/stubs/`.
+`hypr-el-setup --copy` copies the full Hyprland config to `~/.config/hypr/hyprland.lua` for hand
+editing; `hypr-el-setup --reset` returns to the defaults (backups are kept).
+Hyprland 0.57 uses **Lua** for its configuration; LuaLS stubs are in `/usr/share/hypr/stubs/`.
 
 ## License
 

@@ -1,0 +1,29 @@
+{
+  "name": "Gruvbox Dark",
+  "dark": true,
+  "bg": "#1d2021",
+  "base": "#282828",
+  "surface": "#3c3836",
+  "overlay": "#504945",
+  "muted": "#928374",
+  "fg": "#ebdbb2",
+  "fg_dim": "#d5c4a1",
+  "accent": "#fabd2f",
+  "accent2": "#8ec07c",
+  "red": "#fb4934",
+  "green": "#b8bb26",
+  "yellow": "#fabd2f",
+  "blue": "#83a598",
+  "magenta": "#d3869b",
+  "cyan": "#8ec07c",
+  "orange": "#fe8019",
+  "wallpaper": {
+    "motif": "dunes",
+    "colors": [
+      "#fe8019",
+      "#fabd2f",
+      "#d3869b"
+    ]
+  },
+  "id": "gruvbox-dark"
+}

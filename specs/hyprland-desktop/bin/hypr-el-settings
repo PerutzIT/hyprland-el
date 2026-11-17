@@ -1,0 +1,6 @@
+#!/usr/bin/python3 -I
+"""Hyprland-Einstellungen (hyprland-el). --next-theme switches to the next theme."""
+import sys
+sys.path.insert(0, "/usr/share/hypr-el/python")
+from hypr_el import gui
+sys.exit(gui.main(sys.argv))

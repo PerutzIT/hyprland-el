@@ -1,0 +1,29 @@
+{
+  "name": "Ros\u00e9 Pine",
+  "dark": true,
+  "bg": "#13111e",
+  "base": "#191724",
+  "surface": "#26233a",
+  "overlay": "#403d52",
+  "muted": "#6e6a86",
+  "fg": "#e0def4",
+  "fg_dim": "#908caa",
+  "accent": "#ebbcba",
+  "accent2": "#c4a7e7",
+  "red": "#eb6f92",
+  "green": "#9ccfd8",
+  "yellow": "#f6c177",
+  "blue": "#31748f",
+  "magenta": "#c4a7e7",
+  "cyan": "#9ccfd8",
+  "orange": "#f6c177",
+  "wallpaper": {
+    "motif": "orbs",
+    "colors": [
+      "#eb6f92",
+      "#c4a7e7",
+      "#9ccfd8"
+    ]
+  },
+  "id": "rose-pine"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tokyo Night",
+  "dark": true,
+  "bg": "#16161e",
+  "base": "#1a1b26",
+  "surface": "#24283b",
+  "overlay": "#414868",
+  "muted": "#565f89",
+  "fg": "#c0caf5",
+  "fg_dim": "#a9b1d6",
+  "accent": "#7aa2f7",
+  "accent2": "#bb9af7",
+  "red": "#f7768e",
+  "green": "#9ece6a",
+  "yellow": "#e0af68",
+  "blue": "#7aa2f7",
+  "magenta": "#bb9af7",
+  "cyan": "#7dcfff",
+  "orange": "#ff9e64",
+  "wallpaper": {
+    "motif": "hills",
+    "colors": [
+      "#7aa2f7",
+      "#bb9af7",
+      "#7dcfff"
+    ]
+  },
+  "id": "tokyo-night"
+}

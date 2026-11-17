@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Hyprland Settings
+Name[de]=Hyprland-Einstellungen
+Comment=Theme, wallpaper, windows, bar, keyboard, displays and power
+Comment[de]=Theme, Hintergrund, Fenster, Leiste, Tastatur, Bildschirme und Energie
+Exec=hypr-el-settings
+Icon=preferences-desktop
+Categories=Settings;DesktopSettings;GTK;
+Keywords=hyprland;theme;wallpaper;keyboard;monitor;
+OnlyShowIn=Hyprland;
+StartupNotify=true

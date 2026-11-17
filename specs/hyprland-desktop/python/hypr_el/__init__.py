@@ -1,0 +1,1 @@
+"""hyprland-el desktop helpers."""

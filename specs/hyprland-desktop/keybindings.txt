@@ -1,62 +1,58 @@
 
-   HYPRLAND · hyprland-el  —  Tastenkürzel / key bindings          (q = schließen / close)
-   ═══════════════════════════════════════════════════════════════════════════════════
+   HYPRLAND · hyprland-el  —  Tastenkürzel                         (q = schließen)
+   ═══════════════════════════════════════════════════════════════════════════════
 
-   PROGRAMME / APPS
-     SUPER + Return / Q        Terminal (kitty)
-     SUPER + Space / R         App-Starter (hyprlauncher)
-     SUPER + E                 Dateimanager / file manager
-     SUPER + B                 Browser
-     SUPER + F1                diese Übersicht / this cheat sheet
-     SUPER + SHIFT + C         Farbwähler / color picker (→ Zwischenablage)
+   MIT DER MAUS
+     Titelleiste ziehen          Fenster verschieben
+     Fensterrand ziehen          Größe ändern
+     Doppelklick Titelleiste     maximieren / wiederherstellen
+     Knöpfe in der Titelleiste   ✕ schließen   □ maximieren   – minimieren
+     Taskleiste (oben)           Klick: anzeigen/wiederherstellen,
+                                 Mittelklick: schließen, Rechtsklick: minimieren
+     SUPER + linke Maustaste     Fenster überall greifen und verschieben
+     SUPER + rechte Maustaste    Größe ändern
 
-   FENSTER / WINDOWS
-     SUPER + C / W             Fenster schließen / close window
-     SUPER + F                 Vollbild / fullscreen
-     SUPER + SHIFT + F         maximieren / maximize
-     SUPER + V                 schwebend ↔ gekachelt / float ↔ tile
-     SUPER + SHIFT + V         Fenster zentrieren / center
-     SUPER + P                 Pseudo-Tiling
-     SUPER + SHIFT + P         anheften (alle Arbeitsflächen) / pin
-     SUPER + J                 Teilung umschalten / toggle split
-     SUPER + ← → ↑ ↓           Fokus wechseln / move focus
-     SUPER + SHIFT + ← → ↑ ↓   Fenster verschieben / move window
-     SUPER + CTRL  + ← → ↑ ↓   Größe ändern / resize
-     SUPER + ALT + R           Größen-Modus (Pfeile, Esc beendet) / resize mode
-     SUPER + Maus links        Fenster ziehen / drag window
-     SUPER + Maus rechts       Größe ändern / resize window
-     ALT + Tab                 nächstes Fenster / next window
+   PROGRAMME
+     SUPER + Leertaste / R       Programme starten
+     SUPER + Eingabe / T         Terminal
+     SUPER + E                   Dateien
+     SUPER + B                   Browser
+     SUPER + I                   Einstellungen (Theme, Hintergrund, Tastatur …)
+     SUPER + SHIFT + T           nächstes Theme
+     SUPER + F1                  diese Übersicht
 
-   GRUPPEN (TABS)
-     SUPER + G                 Gruppe an/aus / toggle group
-     SUPER + Tab               nächstes Fenster der Gruppe / next in group
-     SUPER + SHIFT + Tab       vorheriges Fenster / previous in group
+   FENSTER
+     ALT + F4  ·  SUPER + Q      schließen
+     SUPER + H                   minimieren
+     SUPER + SHIFT + H           zuletzt minimiertes Fenster zurückholen
+     SUPER + ↑                   maximieren / wiederherstellen
+     SUPER + F                   Vollbild
+     SUPER + V                   frei schwebend ↔ gekachelt
+     SUPER + C                   zentrieren
+     SUPER + P                   auf allen Arbeitsflächen anheften
+     SUPER + ← / → / ↓           Fokus wechseln (SUPER + ALT + ↑: nach oben)
+     SUPER + SHIFT + Pfeile      Fenster verschieben
+     SUPER + CTRL + Pfeile       Größe ändern
+     SUPER + J                   Teilung umschalten
+     SUPER + G  /  SUPER + Tab   Fenster als Tabs gruppieren / nächster Tab
+     ALT + Tab                   nächstes Fenster
 
-   ARBEITSFLÄCHEN / WORKSPACES
-     SUPER + 1 … 0             zu Arbeitsfläche 1–10 / go to workspace
-     SUPER + SHIFT + 1 … 0     Fenster mitnehmen / move window there (follow)
-     SUPER + ALT + 1 … 0       Fenster still verschieben / move window silently
-     SUPER + Mausrad · Bild↑↓  Arbeitsflächen blättern / scroll workspaces
-     3 Finger wischen          Arbeitsfläche wechseln (Touchpad) / swipe
-     SUPER + S                 Notizzettel-Arbeitsfläche / scratchpad
-     SUPER + ALT + S           Fenster in den Scratchpad / move to scratchpad
-
-   SCREENSHOTS  (~/Bilder/Screenshots + Zwischenablage / clipboard)
-     Print  ·  SUPER + SHIFT + S   Bereich / area
-     SUPER + Print             aktives Fenster / active window
-     SHIFT + Print             ganzer Bildschirm / whole screen
+   ARBEITSFLÄCHEN
+     SUPER + 1 … 0               Arbeitsfläche 1–10
+     SUPER + SHIFT + 1 … 0       Fenster dorthin verschieben
+     SUPER + Bild↑ / Bild↓       vorige / nächste Arbeitsfläche
+     SUPER + Mausrad             blättern
+     3 Finger wischen            Arbeitsfläche wechseln (Touchpad)
+     SUPER + S                   Notizzettel-Bereich ein/aus (Scratchpad)
+     SUPER + ALT + S             Fenster in den Notizzettel-Bereich
 
    SYSTEM
-     SUPER + L                 Bildschirm sperren / lock
-     SUPER + M                 Abmelden / Neustart / Ausschalten (hyprshutdown)
-     SUPER + N                 Benachrichtigungen schließen / dismiss notifications
-     SUPER + SHIFT + N         letzte Benachrichtigung zurück / restore
-     SUPER + SHIFT + W         Leiste ein/aus / toggle bar
-     ALT + SHIFT               Tastaturlayout wechseln (bei mehreren) / switch layout
-     Medientasten              Lautstärke, Helligkeit, Wiedergabe / media keys
-
-   ANPASSEN / CUSTOMISE
-     hypr-el-setup --copy      kopiert alle Vorgaben nach ~/.config zum Bearbeiten
-     ~/.config/hypr/hyprland.lua   Hyprland-Konfiguration (Lua) · wiki.hypr.land
-     hyprpm                    Plugins (siehe README)
+     SUPER + L                   Bildschirm sperren
+     SUPER + Escape              Abmelden / Neustart / Ausschalten
+     Druck  ·  SUPER + SHIFT + S Bildschirmfoto (Bereich) → ~/Bilder/Screenshots
+     SUPER + Druck               Bildschirmfoto aktives Fenster
+     SUPER + SHIFT + C           Farbwähler
+     SUPER + N                   Benachrichtigungen schließen
+     ALT + SHIFT                 Tastaturlayout wechseln (bei mehreren)
+     Medientasten                Lautstärke, Helligkeit, Wiedergabe
 

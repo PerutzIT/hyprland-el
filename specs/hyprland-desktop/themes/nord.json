@@ -1,0 +1,29 @@
+{
+  "name": "Nord",
+  "dark": true,
+  "bg": "#242933",
+  "base": "#2e3440",
+  "surface": "#3b4252",
+  "overlay": "#4c566a",
+  "muted": "#616e88",
+  "fg": "#eceff4",
+  "fg_dim": "#d8dee9",
+  "accent": "#88c0d0",
+  "accent2": "#81a1c1",
+  "red": "#bf616a",
+  "green": "#a3be8c",
+  "yellow": "#ebcb8b",
+  "blue": "#81a1c1",
+  "magenta": "#b48ead",
+  "cyan": "#8fbcbb",
+  "orange": "#d08770",
+  "wallpaper": {
+    "motif": "hills",
+    "colors": [
+      "#88c0d0",
+      "#81a1c1",
+      "#5e81ac"
+    ]
+  },
+  "id": "nord"
+}

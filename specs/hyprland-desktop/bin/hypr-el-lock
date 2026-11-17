@@ -1,0 +1,8 @@
+#!/bin/bash
+# Lock the screen with the hyprland-el lock screen (or the user's own hyprlock.conf).
+CFG="${XDG_CONFIG_HOME:-$HOME/.config}"
+pidof hyprlock >/dev/null && exit 0
+if [ -e "$CFG/hypr/hyprlock.conf" ] || [ ! -e "$CFG/hypr-el/hyprlock.conf" ]; then
+    exec hyprlock "$@"
+fi
+exec hyprlock -c "$CFG/hypr-el/hyprlock.conf" "$@"

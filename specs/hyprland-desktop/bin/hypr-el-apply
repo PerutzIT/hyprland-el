@@ -1,0 +1,18 @@
+#!/usr/bin/python3 -I
+"""hypr-el-apply – regenerate the hyprland-el configuration from
+~/.config/hypr-el/settings.json and reload the running session.
+
+  hypr-el-apply                 write files, set GTK theme, reload Hyprland + components
+  hypr-el-apply --files-only    only write the files
+  hypr-el-apply --desktop-only  only apply GTK/desktop settings
+"""
+import sys
+sys.path.insert(0, "/usr/share/hypr-el/python")
+from hypr_el import apply, settings
+
+arg = sys.argv[1] if len(sys.argv) > 1 else ""
+if arg in ("-h", "--help"):
+    print(__doc__.strip()); sys.exit(0)
+if arg == "--desktop-only":
+    apply.gtk_settings(settings.theme(settings.load())); sys.exit(0)
+apply.apply(reload=(arg != "--files-only"), only_files=(arg == "--files-only"))
