@@ -1,5 +1,5 @@
 Name:           hyprland-desktop
-Version:        2.0.0
+Version:        2.1.0
 Release:        1%{?dist}
 Summary:        Complete, preconfigured Hyprland desktop for Enterprise Linux
 License:        MIT
@@ -54,6 +54,8 @@ Requires:       python3
 Requires:       python3-gobject
 Requires:       gtk4
 Requires:       libadwaita
+Requires:       gtk3
+Requires:       gtk-layer-shell
 Requires:       librsvg2-tools
 Requires:       procps-ng
 Requires:       util-linux-core
@@ -83,8 +85,9 @@ a complete, easy to use desktop:
   be moved by their title bar and resized at their borders
 - real minimize: minimized windows are restored from the taskbar
 - status bar with workspaces, taskbar, clock, tray, audio, network, battery
-- seven colour themes (Catppuccin Mocha/Latte, Tokyo Night, Nord, Gruvbox,
-  Rose Pine, Everforest) with matching generated wallpapers
+- "Tiefsee" glass look (translucent windows with blur, floating bar islands)
+  plus seven more colour themes, each with a matching generated wallpaper
+- desktop icons (home, trash, terminal, settings, ~/Desktop content)
 - the "Hyprland-Einstellungen" app (SUPER+I) for theme, wallpaper, title bars,
   gaps, effects, layout, bar, keyboard, mouse, displays and power settings
 - lock screen, idle handling, notifications, polkit agent, screen sharing,
@@ -134,6 +137,13 @@ done
 %{_bindir}/hypr-el-*
 
 %changelog
+* Tue Nov 17 2026 Hypr-EL <hypr-el@localhost> - 2.1.0-1
+- New default theme "Tiefsee" (glass windows, blur, misty night wallpaper)
+- Bar as floating islands; fix the clock format
+- Title bar buttons larger, always coloured and labelled, on every window
+- Desktop icons (hypr-el-desktop), smoother slide animations
+- Settings: desktop icons and active window opacity
+
 * Tue Nov 17 2026 Hypr-EL <hypr-el@localhost> - 2.0.0-1
 - Usability rework: title bars with close/maximize/minimize (hyprbars),
   real minimize/restore via the taskbar, resize at window borders

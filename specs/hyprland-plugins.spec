@@ -25,7 +25,7 @@ BuildRequires:  %{toolset}-runtime
 BuildRequires:  %{toolset}-gcc-plugin-annobin
 BuildRequires:  make
 BuildRequires:  pkgconfig
-BuildRequires:  hyprland-devel
+BuildRequires:  hyprland-devel >= 0.57.2-4
 
 Requires:       hyprland%{?_isa} = %{hyprland_evr}
 

@@ -13,18 +13,20 @@ WALLPAPER_CACHE = os.path.join(CACHE_HOME, "hypr-el", "wallpapers")
 
 DEFAULTS = {
     # appearance
-    "theme": "catppuccin-mocha",
+    "theme": "tiefsee",
     "wallpaper": "",              # "" = the theme's own wallpaper, otherwise a file path
     "titlebars": True,
     "gaps_in": 4,
-    "gaps_out": 8,
-    "rounding": 10,
+    "gaps_out": 10,
+    "rounding": 8,
     "border_size": 2,
     "blur": True,
     "shadows": True,
     "animations": True,
-    "inactive_opacity": 1.0,
-    "terminal_opacity": 0.92,
+    "active_opacity": 0.96,
+    "inactive_opacity": 0.88,
+    "terminal_opacity": 0.85,
+    "desktop_icons": True,
     # windows / behaviour
     "layout": "dwindle",          # dwindle | master | scrolling
     "float_new_windows": False,
@@ -80,7 +82,9 @@ def save(s):
 
 def themes():
     out = {}
-    for f in sorted(glob.glob(os.path.join(SHARE, "themes", "*.json"))):
+    files = sorted(glob.glob(os.path.join(SHARE, "themes", "*.json")),
+                   key=lambda f: (os.path.basename(f) != DEFAULTS["theme"] + ".json", f))
+    for f in files:
         try:
             with open(f) as fh:
                 t = json.load(fh)

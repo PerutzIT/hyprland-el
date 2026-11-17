@@ -11,6 +11,7 @@
                                  Mittelklick: schließen, Rechtsklick: minimieren
      SUPER + linke Maustaste     Fenster überall greifen und verschieben
      SUPER + rechte Maustaste    Größe ändern
+     Schreibtisch                Doppelklick öffnet, Rechtsklick: Menü (Terminal, Theme …)
 
    PROGRAMME
      SUPER + Leertaste / R       Programme starten

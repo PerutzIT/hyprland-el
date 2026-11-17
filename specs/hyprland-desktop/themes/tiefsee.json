@@ -1,0 +1,29 @@
+{
+  "id": "tiefsee",
+  "name": "Tiefsee",
+  "dark": true,
+  "bg": "#090d14",
+  "base": "#111823",
+  "surface": "#1a2431",
+  "overlay": "#2a3a4e",
+  "muted": "#5b6f86",
+  "fg": "#cdd9e5",
+  "fg_dim": "#93a7bb",
+  "accent": "#6aa9c9",
+  "accent2": "#8ccbe6",
+  "red": "#e06c75",
+  "green": "#8fc5a3",
+  "yellow": "#e5c07b",
+  "blue": "#6aa9c9",
+  "magenta": "#b49ddb",
+  "cyan": "#7fd1d9",
+  "orange": "#e0a370",
+  "wallpaper": {
+    "motif": "mist",
+    "colors": [
+      "#6aa9c9",
+      "#8ccbe6",
+      "#4fd6e8"
+    ]
+  }
+}

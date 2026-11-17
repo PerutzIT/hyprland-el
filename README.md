@@ -132,24 +132,27 @@ sudo dnf install hyprland-desktop
 Then pick **Hyprland** in the GDM session menu (gear icon after selecting the user) and log in
 as a normal user. Everything is preconfigured:
 
-- **Windows behave as expected:** every window has a title bar with close, maximize and
-  minimize buttons (hyprbars). Drag the title bar to move a window, drag the border to resize,
-  double-click the title bar to maximize. GTK4/libadwaita apps (Nautilus, …) keep their own
-  header bar. Windows are tiled by default; *Settings → Fenster & Leiste → Klassischer Modus*
+- **Windows behave as expected:** every window has a title bar with clearly visible minimize (–),
+  maximize (□) and close (✕) buttons (hyprbars). Drag the title bar to move a window, drag the
+  border to resize, double-click the title bar to maximize. Windows are tiled by default; *Settings → Fenster & Leiste → Klassischer Modus*
   makes new windows float like on other desktops.
 - **Minimize really works:** minimized windows disappear and come back from the taskbar
   (click), with SUPER+SHIFT+H, or from notifications. Hyprland itself has no minimized state;
   hyprland-desktop keeps them on a hidden special workspace.
-- **Bar:** launcher, workspaces, taskbar, clock with calendar, tray, media, volume, brightness,
+- **Bar:** launcher with taskbar, workspaces, clock with calendar, tray, media, volume, brightness,
   network, battery, settings and power menu.
 - **Settings app "Hyprland-Einstellungen"** (SUPER+I or the gear in the bar): theme, wallpaper
   (own images too), title bars, gaps, rounding, borders, blur, shadows, animations, transparency,
   window layout, bar position/taskbar/clock, keyboard layouts, mouse and touchpad, display
   resolution and scale (with automatic revert), idle/lock/suspend times, default apps.
   Changes apply immediately.
-- **Themes:** Catppuccin Mocha (default) and Latte, Tokyo Night, Nord, Gruvbox Dark, Rosé Pine,
-  Everforest – each colours windows, bar, notifications, terminal, lock screen, launcher and
-  GTK apps, and comes with its own generated wallpaper. SUPER+SHIFT+T cycles through them.
+- **Look:** the default theme *Tiefsee* follows the HyDE style – translucent glass windows with
+  blur, thin borders, a bar made of floating "islands", slide animations and a misty night-city
+  wallpaper. Further themes: Catppuccin Mocha and Latte, Tokyo Night, Nord, Gruvbox Dark,
+  Rosé Pine, Everforest – each colours windows, bar, notifications, terminal, lock screen,
+  launcher and GTK apps and has its own generated wallpaper. SUPER+SHIFT+T cycles through them.
+- **Desktop icons:** home folder, trash, terminal, settings and the content of `~/Schreibtisch`
+  (`~/Desktop`); double click opens, right click shows a menu (terminal, new folder, theme …).
 - Lock screen, idle handling, notifications, polkit agent, screen sharing portal, screenshots,
   clipboard, media keys. **SUPER+F1** shows all key bindings.
 

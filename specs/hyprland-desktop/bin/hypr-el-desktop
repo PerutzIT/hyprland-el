@@ -1,0 +1,6 @@
+#!/usr/bin/python3 -I
+"""Desktop icons for the hyprland-el desktop."""
+import sys
+sys.path.insert(0, "/usr/share/hypr-el/python")
+from hypr_el import desktop
+sys.exit(desktop.main())

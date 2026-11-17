@@ -163,11 +163,17 @@ class Settings(Adw.PreferencesWindow):
         self.spin(g, "gaps_out", "Abstand zum Bildschirmrand", 0, 40)
         page.add(g)
 
+        g = Adw.PreferencesGroup(title="Schreibtisch")
+        self.switch(g, "desktop_icons", "Symbole auf dem Schreibtisch",
+                    "Persönlicher Ordner, Papierkorb, Terminal, Einstellungen und der Inhalt von ~/Schreibtisch")
+        page.add(g)
+
         g = Adw.PreferencesGroup(title="Effekte")
         self.switch(g, "animations", "Animationen")
         self.switch(g, "blur", "Unschärfe hinter Leiste und transparenten Fenstern")
         self.switch(g, "shadows", "Schatten")
-        self.spin(g, "inactive_opacity", "Deckkraft inaktiver Fenster", 0.6, 1.0, 0.05, digits=2)
+        self.spin(g, "active_opacity", "Deckkraft des aktiven Fensters", 0.6, 1.0, 0.02, "1 = undurchsichtig", digits=2)
+        self.spin(g, "inactive_opacity", "Deckkraft inaktiver Fenster", 0.6, 1.0, 0.02, digits=2)
         self.spin(g, "terminal_opacity", "Deckkraft des Terminals", 0.6, 1.0, 0.02, digits=2)
         page.add(g)
         return page

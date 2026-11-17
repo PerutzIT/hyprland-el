@@ -162,7 +162,44 @@ def _dunes(t, c, rng):
   <g>{''.join(layers)}</g>"""
 
 
-_GEN = {"aurora": _aurora, "waves": _waves, "hills": _hills, "orbs": _orbs, "dunes": _dunes}
+def _mist(t, c, rng):
+    """Night city in mist and rain: layered skyline silhouettes, haze, glowing horizon."""
+    layers = []
+    for i in range(4):
+        base = 1250 + i * 210
+        x, d = -50, f"M -50 2300 L -50 {base} "
+        while x < 3900:
+            w = rng.uniform(60, 220)
+            h = rng.uniform(80, 520) * (1.0 - i * 0.18)
+            d += f"L {x:.0f} {base - h:.0f} L {x + w:.0f} {base - h:.0f} "
+            x += w + rng.uniform(0, 30)
+            d += f"L {x:.0f} {base:.0f} "
+        d += "L 3900 2300 Z"
+        col = _mix(t['surface'], t['bg'], 0.25 + i * 0.22)
+        layers.append(f'<path d="{d}" fill="{col}" opacity="{0.55 + i * 0.13:.2f}"/>')
+        # haze over each layer
+        layers.append(f'<rect x="0" y="{base - 380}" width="3840" height="520" fill="{c[0]}" '
+                      f'opacity="{0.06 - i * 0.01:.3f}" filter="url(#b4)"/>')
+        # a few lit windows
+        for _ in range(60 - i * 12):
+            wx, wy = rng.uniform(0, 3840), rng.uniform(base - 400, base - 20)
+            layers.append(f'<rect x="{wx:.0f}" y="{wy:.0f}" width="6" height="9" fill="{c[1]}" '
+                          f'opacity="{rng.uniform(0.15, 0.6):.2f}"/>')
+    rain = "".join(
+        f'<line x1="{x:.0f}" y1="{y:.0f}" x2="{x - 40:.0f}" y2="{y + rng.uniform(120, 260):.0f}" '
+        f'stroke="{t["fg"]}" stroke-width="{rng.uniform(1, 2.2):.1f}" opacity="{rng.uniform(0.03, 0.10):.2f}"/>'
+        for x, y in ((rng.uniform(0, 3900), rng.uniform(-200, 2160)) for _ in range(420)))
+    return f"""
+  <ellipse cx="1900" cy="1150" rx="2300" ry="520" fill="url(#glowA)"/>
+  <ellipse cx="2900" cy="500" rx="1300" ry="700" fill="url(#glowB)"/>
+  <path d="M -100 1330 C 900 1280, 2600 1380, 3950 1300" stroke="{c[2]}" stroke-width="6" fill="none" opacity="0.85" filter="url(#b3)"/>
+  <path d="M -100 1330 C 900 1280, 2600 1380, 3950 1300" stroke="{c[2]}" stroke-width="140" fill="none" opacity="0.30" filter="url(#b2)"/>
+  <g>{''.join(layers)}</g>
+  <g>{rain}</g>
+  <rect width="3840" height="2160" fill="{t['bg']}" opacity="0.08"/>"""
+
+
+_GEN = {"aurora": _aurora, "waves": _waves, "hills": _hills, "orbs": _orbs, "dunes": _dunes, "mist": _mist}
 
 
 def svg(theme):

@@ -6,7 +6,7 @@
 
 Name:           hyprland
 Version:        0.57.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Dynamic tiling Wayland compositor that doesn't sacrifice on its looks
 # Hyprland: BSD-3-Clause; bundled udis86: BSD-2-Clause
 License:        BSD-3-Clause AND BSD-2-Clause
@@ -108,6 +108,8 @@ Requires:       lua5.5-devel muparser-devel libxkbcommon-devel wayland-devel
 Requires:       pkgconfig(pixman-1) pkgconfig(libdrm) pkgconfig(libinput)
 Requires:       pkgconfig(pangocairo) pkgconfig(re2) pkgconfig(lcms2)
 Requires:       pkgconfig(egl) pkgconfig(glesv2) libglvnd-devel
+# headers included by the installed Hyprland headers
+Requires:       glslang-devel libxcb-devel xcb-util-errors-devel xcb-util-wm-devel cairo-devel kernel-headers
 
 %description devel
 Header and protocol files needed to build Hyprland plugins (e.g. with hyprpm).
@@ -166,6 +168,10 @@ fi
 %{_datadir}/pkgconfig/hyprland.pc
 
 %changelog
+* Tue Nov 17 2026 Hypr-EL <hypr-el@localhost> - 0.57.2-4
+- hyprland-devel: require the -devel packages of all headers the Hyprland
+  headers include (glslang, xcb, cairo); plugin builds failed without them
+
 * Wed Nov 11 2026 Hypr-EL <hypr-el@localhost> - 0.57.2-3
 - Plugin builds: add lua5.5 to hyprland.pc Requires and the hyprpm wrapper include path
 

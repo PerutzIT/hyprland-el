@@ -135,27 +135,33 @@ def gen_waybar(s, t):
     clock = "%H:%M" if s["clock_24h"] else "%I:%M %p"
     if s["clock_seconds"]:
         clock = clock.replace("%M", "%M:%S")
-    left = ["custom/launcher", "hyprland/workspaces"]
-    if s["bar_taskbar"]:
-        left.append("wlr/taskbar")
+    apps = ["custom/launcher"] + (["wlr/taskbar"] if s["bar_taskbar"] else [])
+    top = s["bar_position"] == "top"
     cfg = {
         "layer": "top",
         "position": s["bar_position"],
-        "height": 34,
-        "margin-top": 6 if s["bar_position"] == "top" else 0,
-        "margin-bottom": 6 if s["bar_position"] == "bottom" else 0,
-        "margin-left": 8,
-        "margin-right": 8,
-        "spacing": 4,
+        "height": 40,
+        "margin-top": 6 if top else 0,
+        "margin-bottom": 0 if top else 6,
+        "margin-left": 10,
+        "margin-right": 10,
+        "spacing": 8,
         "reload_style_on_change": True,
-        "modules-left": left,
-        "modules-center": ["clock"],
-        "modules-right": ["tray", "mpris", "pulseaudio", "backlight", "network", "battery",
-                          "custom/settings", "custom/power"],
+        # floating "islands" (HyDE style): every group is drawn as its own pill
+        "modules-left": ["group/apps"],
+        "modules-center": ["group/ws", "group/time"],
+        "modules-right": ["group/status", "group/system"],
+        "group/apps": {"orientation": "horizontal", "modules": apps},
+        "group/ws": {"orientation": "horizontal", "modules": ["hyprland/workspaces"]},
+        "group/time": {"orientation": "horizontal", "modules": ["clock", "mpris"]},
+        "group/status": {"orientation": "horizontal",
+                         "modules": ["tray", "pulseaudio", "backlight", "network", "battery"]},
+        "group/system": {"orientation": "horizontal", "modules": ["custom/settings", "custom/power"]},
         "custom/launcher": {"format": "", "tooltip-format": "Programme (SUPER+Leertaste)",
                             "on-click": "hyprlauncher", "on-click-right": "hypr-el-keys"},
         "hyprland/workspaces": {
-            "format": "{name}",
+            "format": "{icon}",
+            "format-icons": {"default": "\uf111", "active": "\uf192", "empty": "\uf10c"},
             "persistent-workspaces": {"*": 4},
             "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({workspace = \"e-1\"})'",
             "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({workspace = \"e+1\"})'",
@@ -170,8 +176,8 @@ def gen_waybar(s, t):
             "ignore-list": ["hypr-el-keys"],
         },
         "clock": {
-            "format": clock,
-            "format-alt": "{:%A, %d. %B %Y  " + clock + "}",
+            "format": "{:" + clock + "  ·  %a %d.%m.}",
+            "format-alt": "{:%A, %d. %B %Y   " + clock + "}",
             "interval": 1 if s["clock_seconds"] else 30,
             "tooltip-format": "<tt><small>{calendar}</small></tt>",
             "calendar": {"mode": "month", "weeks-pos": "left", "on-scroll": 1,
@@ -209,7 +215,8 @@ def gen_waybar(s, t):
 
 
 def gen_waybar_css(s, t):
-    dark = t["dark"]
+    pill = _rgba(t['base'], 0.80 if t['dark'] else 0.88)
+    edge = _rgba(t['overlay'], 0.55)
     return f"""/* {MARK} */
 * {{
   font-family: "JetBrains Mono", "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
@@ -219,38 +226,41 @@ def gen_waybar_css(s, t):
   border-radius: 0;
   min-height: 0;
 }}
-window#waybar {{
-  background: {_rgba(t['base'], 0.78 if dark else 0.85)};
-  color: {t['fg']};
-  border-radius: 12px;
-  border: 1px solid {_rgba(t['overlay'], 0.6)};
-}}
+window#waybar {{ background: transparent; color: {t['fg']}; }}
 tooltip {{ background: {t['base']}; border: 1px solid {t['overlay']}; border-radius: 10px; color: {t['fg']}; }}
 tooltip label {{ color: {t['fg']}; }}
 
-#custom-launcher {{ color: {t['accent']}; font-size: 16px; padding: 0 12px 0 14px; }}
+/* islands */
+#apps, #ws, #time, #status, #system {{
+  background: {pill};
+  border: 1px solid {edge};
+  border-radius: 14px;
+  padding: 0 6px;
+  margin: 2px 0;
+}}
+
+#custom-launcher {{ color: {t['accent']}; font-size: 17px; padding: 0 12px 0 8px; }}
 #custom-launcher:hover {{ color: {t['accent2']}; }}
 
-#workspaces {{ margin: 4px 2px; padding: 0 2px; background: {_rgba(t['surface'], 0.7)}; border-radius: 9px; }}
-#workspaces button {{ color: {t['fg_dim']}; padding: 0 8px; margin: 2px 1px; border-radius: 7px; transition: all 0.2s ease; }}
-#workspaces button.active {{ color: {t['base']}; background: {t['accent']}; }}
-#workspaces button.empty {{ color: {t['muted']}; }}
-#workspaces button.urgent {{ color: {t['base']}; background: {t['red']}; }}
-#workspaces button:hover {{ background: {_rgba(t['accent'], 0.25)}; color: {t['fg']}; box-shadow: none; }}
-
-#taskbar {{ margin: 4px 4px; padding: 0 2px; }}
-#taskbar button {{ padding: 0 6px; margin: 2px 1px; border-radius: 7px; border-bottom: 2px solid transparent; }}
-#taskbar button.active {{ background: {_rgba(t['surface'], 0.9)}; border-bottom: 2px solid {t['accent']}; }}
+#taskbar button {{ padding: 0 7px; margin: 5px 1px; border-radius: 9px; border-bottom: 2px solid transparent; }}
+#taskbar button.active {{ background: {_rgba(t['surface'], 0.95)}; border-bottom: 2px solid {t['accent']}; }}
 #taskbar button.minimized {{ opacity: 0.45; }}
-#taskbar button:hover {{ background: {_rgba(t['accent'], 0.2)}; box-shadow: none; }}
+#taskbar button:hover {{ background: {_rgba(t['accent'], 0.22)}; box-shadow: none; }}
 
-#clock {{ color: {t['fg']}; font-weight: 700; padding: 0 12px; }}
+#mpris {{ color: {t['fg']}; padding: 0 8px; }}
+#mpris.paused {{ color: {t['fg_dim']}; }}
 
-#tray, #mpris, #pulseaudio, #backlight, #network, #battery, #custom-settings, #custom-power {{
-  padding: 0 9px; margin: 4px 0; border-radius: 8px; color: {t['fg_dim']};
+#workspaces button {{ color: {t['muted']}; padding: 0 5px; margin: 6px 1px; border-radius: 10px; font-size: 11px;
+  transition: all 0.25s cubic-bezier(.55,-0.68,.48,1.68); }}
+#workspaces button.active {{ color: {t['accent']}; padding: 0 12px; background: {_rgba(t['accent'], 0.18)}; }}
+#workspaces button.urgent {{ color: {t['red']}; }}
+#workspaces button:hover {{ color: {t['fg']}; background: {_rgba(t['surface'], 0.9)}; box-shadow: none; }}
+
+#clock {{ color: {t['fg']}; font-weight: 700; padding: 0 10px; }}
+
+#tray, #pulseaudio, #backlight, #network, #battery, #custom-settings, #custom-power {{
+  padding: 0 8px; color: {t['fg_dim']};
 }}
-#tray {{ background: {_rgba(t['surface'], 0.6)}; margin-right: 4px; }}
-#mpris {{ color: {t['magenta']}; }}
 #pulseaudio {{ color: {t['accent2']}; }}
 #pulseaudio.muted {{ color: {t['muted']}; }}
 #backlight {{ color: {t['yellow']}; }}
@@ -259,10 +269,9 @@ tooltip label {{ color: {t['fg']}; }}
 #battery {{ color: {t['green']}; }}
 #battery.warning:not(.charging) {{ color: {t['yellow']}; }}
 #battery.critical:not(.charging) {{ color: {t['red']}; }}
-#custom-settings {{ color: {t['fg_dim']}; }}
-#custom-power {{ color: {t['red']}; margin-right: 6px; }}
+#custom-power {{ color: {t['red']}; }}
 #pulseaudio:hover, #backlight:hover, #network:hover, #custom-settings:hover, #custom-power:hover {{
-  background: {_rgba(t['surface'], 0.9)};
+  color: {t['fg']};
 }}
 """
 
@@ -532,5 +541,9 @@ def _exec(cmd):
 
 def reload_session():
     _run(["hyprctl", "reload"])
+    t = S.theme(S.load())
+    _run(["dbus-update-activation-environment", "--systemd",
+          "GTK_THEME=" + ("Adwaita:dark" if t["dark"] else "Adwaita"),
+          "ADW_DEBUG_COLOR_SCHEME=" + ("prefer-dark" if t["dark"] else "prefer-light")])
     sess = shutil.which("hypr-el-session") or "/usr/bin/hypr-el-session"
     _run([sess, "restart"])

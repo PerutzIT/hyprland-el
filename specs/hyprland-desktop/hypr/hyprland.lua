@@ -21,17 +21,17 @@ local function exists(path)
 end
 
 -------------------------------------------------------------------------------
--- settings (defaults = Catppuccin Mocha; overridden by hypr-el-settings)
+-- settings (defaults = theme "Tiefsee"; overridden by hypr-el-settings)
 -------------------------------------------------------------------------------
 local S = {
     theme = {
-        dark = true, bg = "#11111b", base = "#1e1e2e", surface = "#313244", overlay = "#45475a",
-        muted = "#6c7086", fg = "#cdd6f4", fg_dim = "#a6adc8", accent = "#cba6f7", accent2 = "#89b4fa",
-        red = "#f38ba8", green = "#a6e3a1", yellow = "#f9e2af", blue = "#89b4fa", magenta = "#f5c2e7",
-        cyan = "#94e2d5", orange = "#fab387",
+        dark = true, bg = "#090d14", base = "#111823", surface = "#1a2431", overlay = "#2a3a4e",
+        muted = "#5b6f86", fg = "#cdd9e5", fg_dim = "#93a7bb", accent = "#6aa9c9", accent2 = "#8ccbe6",
+        red = "#e06c75", green = "#8fc5a3", yellow = "#e5c07b", blue = "#6aa9c9", magenta = "#b49ddb",
+        cyan = "#7fd1d9", orange = "#e0a370",
     },
-    titlebars = true, gaps_in = 4, gaps_out = 8, rounding = 10, border_size = 2,
-    blur = true, shadows = true, animations = true, inactive_opacity = 1.0,
+    titlebars = true, gaps_in = 4, gaps_out = 10, rounding = 8, border_size = 2,
+    blur = true, shadows = true, animations = true, active_opacity = 0.96, inactive_opacity = 0.88,
     layout = "dwindle", float_new_windows = false, focus_follows_mouse = true,
     kb_layout = "us", kb_variant = "", numlock = true, mouse_sensitivity = 0.0,
     mouse_natural_scroll = false, touchpad_natural_scroll = true, tap_to_click = true,
@@ -80,7 +80,7 @@ local menu        = "hyprlauncher"
 -------------------
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE")
+    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE GTK_THEME ADW_DEBUG_COLOR_SCHEME QT_QPA_PLATFORM QT_QPA_PLATFORMTHEME")
     -- wallpaper, bar, notifications, idle/lock, polkit agent, theme
     hl.exec_cmd("hypr-el-session start")
 end)
@@ -97,6 +97,9 @@ if exists("/usr/lib64/qt6/plugins/platformthemes/libhyprqt6engine.so") then
     hl.env("QT_QPA_PLATFORMTHEME", "hyprqt6engine")
 end
 hl.env("GDK_BACKEND", "wayland,x11,*")
+-- dark/light GTK4 + libadwaita apps according to the theme
+hl.env("ADW_DEBUG_COLOR_SCHEME", T.dark and "prefer-dark" or "prefer-light")
+hl.env("GTK_THEME", T.dark and "Adwaita:dark" or "Adwaita")
 hl.env("SDL_VIDEODRIVER", "wayland,x11")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
@@ -111,8 +114,8 @@ hl.config({
         gaps_out    = S.gaps_out,
         border_size = S.border_size,
         col = {
-            active_border   = { colors = { col(T.accent), col(T.accent2) }, angle = 45 },
-            inactive_border = col(T.overlay, 0.6),
+            active_border   = { colors = { col(T.accent, 0.9), col(T.accent2, 0.5) }, angle = 45 },
+            inactive_border = col(T.overlay, 0.45),
         },
         resize_on_border        = true,
         extend_border_grab_area = 12,
@@ -123,7 +126,7 @@ hl.config({
     decoration = {
         rounding       = S.rounding,
         rounding_power = 2,
-        active_opacity   = 1.0,
+        active_opacity   = S.active_opacity,
         inactive_opacity = S.inactive_opacity,
         shadow = {
             enabled      = S.shadows,
@@ -132,11 +135,15 @@ hl.config({
             color        = T.dark and 0x55000000 or 0x30000000,
         },
         blur = {
-            enabled  = S.blur,
-            size     = 5,
-            passes   = 2,
-            vibrancy = 0.17,
-            popups   = true,
+            enabled   = S.blur,
+            size      = 7,
+            passes    = 3,
+            noise     = 0.015,
+            contrast  = 0.95,
+            brightness = 0.85,
+            vibrancy  = 0.2,
+            popups    = true,
+            xray      = false,
         },
     },
 
@@ -166,21 +173,24 @@ hl.curve("almostLinear", { type = "bezier", points = { {0.5, 0.5}, {0.75, 1} } }
 hl.curve("quick",        { type = "bezier", points = { {0.15, 0},  {0.1, 1}  } })
 hl.curve("easy",         { type = "spring", mass = 1, stiffness = 238.1191, damping = 24.21279333 })
 
+hl.curve("wind",         { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.05} } })
+hl.curve("winIn",        { type = "bezier", points = { {0.1, 1.1},  {0.1, 1.1}  } })
+hl.curve("winOut",       { type = "bezier", points = { {0.3, -0.3}, {0, 1}      } })
+
 hl.animation({ leaf = "global",        enabled = true, speed = 10,   bezier = "default" })
 hl.animation({ leaf = "border",        enabled = true, speed = 5.39, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windows",       enabled = true, speed = 4.79, spring = "easy" })
-hl.animation({ leaf = "windowsIn",     enabled = true, speed = 4.1,  spring = "easy",   style = "popin 87%" })
-hl.animation({ leaf = "windowsOut",    enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
+hl.animation({ leaf = "windows",       enabled = true, speed = 6,    bezier = "wind",   style = "slide" })
+hl.animation({ leaf = "windowsIn",     enabled = true, speed = 6,    bezier = "winIn",  style = "slide" })
+hl.animation({ leaf = "windowsOut",    enabled = true, speed = 5,    bezier = "winOut", style = "slide" })
+hl.animation({ leaf = "windowsMove",   enabled = true, speed = 5,    bezier = "wind",   style = "slide" })
 hl.animation({ leaf = "fadeIn",        enabled = true, speed = 1.73, bezier = "almostLinear" })
 hl.animation({ leaf = "fadeOut",       enabled = true, speed = 1.46, bezier = "almostLinear" })
 hl.animation({ leaf = "fade",          enabled = true, speed = 3.03, bezier = "quick" })
 hl.animation({ leaf = "layers",        enabled = true, speed = 3.81, bezier = "easeOutQuint" })
-hl.animation({ leaf = "layersIn",      enabled = true, speed = 4,    bezier = "easeOutQuint", style = "fade" })
+hl.animation({ leaf = "layersIn",      enabled = true, speed = 4,    bezier = "easeOutQuint", style = "slide" })
 hl.animation({ leaf = "layersOut",     enabled = true, speed = 1.5,  bezier = "linear",       style = "fade" })
-hl.animation({ leaf = "workspaces",    enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesIn",  enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "easeOutQuint", style = "fade" })
+hl.animation({ leaf = "workspaces",    enabled = true, speed = 5,    bezier = "wind",   style = "slidefade 20%" })
+hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 4, bezier = "wind", style = "slidefadevert 20%" })
 
 ---------------------------------------------------------------
 ---- TITLE BARS (hyprbars plugin from hyprland-plugins)    ----
@@ -194,20 +204,19 @@ if haveBars then
         plugin = {
             hyprbars = {
                 enabled           = S.titlebars,
-                bar_height        = 28,
-                bar_color         = col(T.base, 0.96),
+                bar_height        = 32,
+                bar_color         = col(T.base, 0.92),
                 ["col.text"]      = col(T.fg_dim),
                 bar_text_font     = "Sans",
                 bar_text_size     = 10,
                 bar_text_weight   = "medium",
                 bar_text_align    = "left",
-                bar_padding       = 10,
-                bar_button_padding = 8,
+                bar_padding       = 12,
+                bar_button_padding = 10,
                 bar_part_of_window = true,
                 bar_precedence_over_border = true,
-                bar_blur          = false,
-                icon_on_hover     = true,
-                inactive_button_color = col(T.overlay),
+                bar_blur          = true,
+                icon_on_hover     = false,
                 on_double_click   = "hyprctl eval 'hypr_el.toggle_maximize()'",
             },
         },
@@ -273,17 +282,19 @@ end)
 
 if haveBars and hl.plugin.hyprbars and hl.plugin.hyprbars.add_button then
     -- buttons are added right to left: close, maximize, minimize
-    hl.plugin.hyprbars.add_button({ bg_color = col(T.red),    fg_color = col(T.base), size = 14, icon = "✕",
+    -- buttons are drawn right to left: close, maximize, minimize (always visible, with icons)
+    hl.plugin.hyprbars.add_button({ bg_color = col(T.red),     fg_color = col(T.bg), size = 18, icon = "✕",
         action = "hyprctl dispatch 'hl.dsp.window.close()'" })
-    hl.plugin.hyprbars.add_button({ bg_color = col(T.yellow), fg_color = col(T.base), size = 14, icon = "□",
+    hl.plugin.hyprbars.add_button({ bg_color = col(T.yellow),  fg_color = col(T.bg), size = 18, icon = "□",
         action = "hyprctl eval 'hypr_el.toggle_maximize()'" })
-    hl.plugin.hyprbars.add_button({ bg_color = col(T.green),  fg_color = col(T.base), size = 14, icon = "–",
+    hl.plugin.hyprbars.add_button({ bg_color = col(T.green),   fg_color = col(T.bg), size = 18, icon = "–",
         action = "hyprctl eval 'hypr_el.minimize()'" })
 
-    -- GTK4 / libadwaita apps draw their own header bar with buttons
+    -- every normal window gets the same bar (GTK apps keep their header bar below it);
+    -- only the screen-share picker and the desktop stay bare
     hl.window_rule({
-        name  = "csd-apps-without-titlebar",
-        match = { class = "^(org\\.gnome\\..+|io\\.github\\..+|io\\.github\\.perutzit\\.HyprElSettings|hyprland-share-picker)$" },
+        name  = "no-titlebar",
+        match = { class = "^(hyprland-share-picker|hypr-el-desktop)$" },
         ["hyprbars:no_bar"] = true,
     })
 end
@@ -432,3 +443,4 @@ hl.window_rule({ name = "move-hyprland-run", match = { class = "hyprland-run" },
 hl.layer_rule({ name = "blur-waybar",   match = { namespace = "^waybar$" },        blur = true, ignore_alpha = 0.3 })
 hl.layer_rule({ name = "blur-mako",     match = { namespace = "^notifications$" }, blur = true, ignore_alpha = 0.3 })
 hl.layer_rule({ name = "blur-launcher", match = { namespace = "^hyprlauncher$" },  blur = true, ignore_alpha = 0.3 })
+hl.layer_rule({ name = "desktop-icons", match = { namespace = "^hypr-el-desktop$" }, no_anim = true })

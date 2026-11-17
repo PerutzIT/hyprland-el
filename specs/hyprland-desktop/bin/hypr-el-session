@@ -46,6 +46,9 @@ components() {
     a=$(pick "$CFG/waybar/config" "$CFG/waybar/config.jsonc" -- -c "$EL/waybar/config.jsonc" -s "$EL/waybar/style.css")
     start_bg waybar $a
     a=$(pick "$CFG/mako/config" -- --config "$EL/mako.conf");          start_bg mako $a
+    if ! grep -qs '"desktop_icons": *false' "$EL/settings.json"; then
+        start_bg hypr-el-desktop
+    fi
 }
 
 case "${1:-start}" in
@@ -60,18 +63,20 @@ case "${1:-start}" in
         notify-send -a hypr-el -i dialog-information "Hyprland-Desktop aktualisiert" \
           "Alte Konfigurationsdateien wurden gesichert (*.bak-v1). Einstellungen: SUPER+I"
     fi
-    if [ ! -e "$STATE/welcomed-v2" ]; then
+    if [ ! -e "$STATE/welcomed-v2.1" ]; then
         sleep 2
         notify-send -a hypr-el -i preferences-desktop -t 25000 "Willkommen bei Hyprland" \
 "<b>SUPER+I</b>  Einstellungen (Theme, Wallpaper, Tastatur …)
 <b>SUPER+Leertaste</b>  Programme   <b>SUPER+F1</b>  alle Tastenkürzel
 Fenster: Titelleiste ziehen = verschieben, Rand ziehen = Größe
-Knöpfe: ✕ schließen · □ maximieren · – minimieren (zurück über die Leiste)" \
-          && touch "$STATE/welcomed-v2"
+Knöpfe: ✕ schließen · □ maximieren · – minimieren (zurück über die Taskleiste)
+Desktop: Doppelklick öffnet, Rechtsklick zeigt ein Menü" \
+          && touch "$STATE/welcomed-v2.1"
     fi
     ;;
   restart)
     pkill -u "$USER" -x hyprpaper; pkill -u "$USER" -x hypridle; pkill -u "$USER" -x waybar; pkill -u "$USER" -x mako
+    pkill -u "$USER" -f '^/usr/bin/python3 -I /usr/bin/hypr-el-desktop' 
     sleep 0.4
     components
     ;;
